@@ -32,7 +32,7 @@ centroid_method = "median"    # "mean", "median"
 concept_per_class = 50      # How many images for each class: 5,10,20,50, None
 
 one_hot = False
-epochs = 200
+epochs = 50
 batch_size = 32
 crop = False                  # True without background
 
@@ -43,7 +43,7 @@ device = "cpu"
 def run_training(cbm):
     """Preprocess data and train the CBM model with different hyperparameters."""
     cbm.preprocess_data(type_="standard", label_type=one_hot)
-    for lambda_1, lr in [(1e-4, 1e-4), (1e-3, 1e-3), (1e-3, 1e-4)]: #define here your own hyperparameters
+    for lambda_1, lr in [(1e-4, 1e-4)]: #define here your own hyperparameters
         cbm.train(
             num_epochs=epochs,
             lambda_1=lambda_1,
@@ -51,6 +51,7 @@ def run_training(cbm):
             device=device,
             batch_size=batch_size,
             project=project,
+
             to_print=False,
             early_stopping_patience=None,
             one_hot=one_hot,
@@ -86,23 +87,7 @@ experiments = [
     {
         'segmentation_technique': 'SAM2',
         'concept_name': None,
-        'clusters_list': [128, 256, 512, 1024, 2048], #define here your own cluster sizes
-        'load_concepts_first': True
-    },
-    
-    # ---- Attention! ----
-    # you need to have the segments for GDINO, MaskRCNN or any other segmentation technique to run those!
-    
-    {
-        'segmentation_technique': 'GDINO',
-        'concept_name': 'partimagenet', # used promt for GDINO
-        'clusters_list': [128, 256],
-        'load_concepts_first': True
-    },
-    {
-        'segmentation_technique': 'MaskRCNN',
-        'concept_name': None,
-        'clusters_list': [128, 256],
+        'clusters_list': [128, 256, 512], #define here your own cluster sizes
         'load_concepts_first': True
     },
 ]
