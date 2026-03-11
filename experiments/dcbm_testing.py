@@ -52,7 +52,7 @@ def run_training(cbm):
             batch_size=batch_size,
             project=project,
 
-            to_print=False,
+            to_print= True,
             early_stopping_patience=None,
             one_hot=one_hot,
             use_wandb=use_wandb,
