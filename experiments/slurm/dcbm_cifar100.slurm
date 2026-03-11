@@ -5,10 +5,10 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=8G
 #SBATCH --time=01:00:00
-#SBATCH --output=dcbm_cifar100_%j.out
+#SBATCH --output=../logs/dcbm_cifar100_%j.out
 
-cd /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test
+cd /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox
 source dcbm_env/bin/activate
 cd experiments
 
-python dcbm_testing.py --dataset cifar10 --model_name CLIP-ViT-L14
+python dcbm_testing.py --dataset cifar100 --model_name CLIP-ViT-L14

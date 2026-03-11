@@ -1,6 +1,6 @@
 import os
 import argparse
-import wandb
+# import wandb
 import re
 import clip
 
