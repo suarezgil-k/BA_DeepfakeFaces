@@ -8,7 +8,14 @@
 #SBATCH --output=../logs/dcbm_cifar100_%j.out
 
 cd /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox
-source dcbm_env/bin/activate
+
+source /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/dcbm_env/bin/activate
+
+#Last job failed due to clip error, trying to debug
+echo "Python path:"
+which python
+python -c "import clip; print('clip works')"
+
 cd experiments
 
 python dcbm_testing.py --dataset cifar100 --model_name CLIP-ViT-L14
