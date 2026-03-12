@@ -4,8 +4,10 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=8G
-#SBATCH --time=01:00:00
-#SBATCH --output=../logs/dcbm_cifar100_%j.out
+#SBATCH --time=02:00:00
+#SBATCH --output=experiments/logs/dcbm_%j.out
+
+echo "Time: $(date)"
 
 cd /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox
 
