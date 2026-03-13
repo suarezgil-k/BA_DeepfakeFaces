@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=8G
-#SBATCH --time=02:00:00
+#SBATCH --time=04:00:00
 #SBATCH --output=experiments/logs/dcbm_%j.out
 
 echo "Time: $(date)"
