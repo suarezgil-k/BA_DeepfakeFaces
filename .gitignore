@@ -1,6 +1,5 @@
 data/
-dcbm-env/
-dcbm_env/
+dcbm_env*/
 *.out
 *.torch
 *.tar.gz
