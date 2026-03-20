@@ -13,6 +13,10 @@ echo "Time: $(date)"
 module load devel/python/3.11.7-gnu-14.2
 source /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/dcbm_env_py311/bin/activate
 
+
+cd /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox || exit 1
+export PYTHONPATH=$PWD
+
 echo "Python path:"
 which python
 python --version
