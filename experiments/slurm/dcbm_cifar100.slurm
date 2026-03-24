@@ -26,4 +26,5 @@ python -c "import clip; print('clip works')"
 python -c "import pandas; print('pandas works')"
 python -c "import mmcv; print('mmcv works')"
 
-python /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/dcbm_testing.py --dataset cifar100 --model_name CLIP-ViT-L14
+cd experiments || exit 1
+python dcbm_testing.py --dataset cifar100 --model_name CLIP-ViT-L14
