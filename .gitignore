@@ -1,6 +1,9 @@
 # environments
 dcbm_env*/
+
+# python cache
 __pycache__/
+.ipynb_checkpoints/
 
 # cluster / job outputs
 *.out
@@ -17,8 +20,3 @@ data/FaceForensics/
 data/Segments/
 data/Embeddings/
 data/Exemplary_explanations/data/
-dcbm_env*/
-*.out
-*.torch
-*.tar.gz
-__pycache__/
