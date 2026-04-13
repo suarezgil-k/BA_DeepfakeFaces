@@ -1,4 +1,22 @@
-data/
+# environments
+dcbm_env*/
+__pycache__/
+
+# cluster / job outputs
+*.out
+
+# model / tensor artifacts
+*.torch
+
+# archives
+*.tar.gz
+
+# large data folders only
+data/cifar-10-batches-py/
+data/FaceForensics/
+data/Segments/
+data/Embeddings/
+data/Exemplary_explanations/data/
 dcbm_env*/
 *.out
 *.torch
