@@ -1,6 +1,22 @@
+"""
+NOTE:
+This file is a modified copy of the original source file: dcbm_testing.py
+The original file remains unchanged.
+This version was created for adaptation within the scope of the bachelor thesis.
+
+Edited lines of code are labeled #EDITED
+
+Specific changes:
+- Disabled wandb import for local execution
+- Reduced number of epochs for testing
+- Simplified hyperparameter search to a single configuration
+- Enabled training output (to_print=True)
+- Reduced experiment scope to a smaller SAM2-based setup
+"""
+
 import os
 import argparse
-# import wandb
+# import wandb #EDITED
 import re
 import clip
 
@@ -13,7 +29,7 @@ import sys
 current_dir = os.getcwd()
 parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
 sys.path.insert(0, parent_dir)
-                
+
 from utils.dcbm import *
 
 
@@ -32,7 +48,7 @@ centroid_method = "median"    # "mean", "median"
 concept_per_class = 50      # How many images for each class: 5,10,20,50, None
 
 one_hot = False
-epochs = 50
+epochs = 50 #EDITED
 batch_size = 32
 crop = False                  # True without background
 
@@ -43,7 +59,7 @@ device = "cpu"
 def run_training(cbm):
     """Preprocess data and train the CBM model with different hyperparameters."""
     cbm.preprocess_data(type_="standard", label_type=one_hot)
-    for lambda_1, lr in [(1e-4, 1e-4)]: #define here your own hyperparameters
+    for lambda_1, lr in [(1e-4, 1e-4)]: #EDITED
         cbm.train(
             num_epochs=epochs,
             lambda_1=lambda_1,
@@ -52,7 +68,7 @@ def run_training(cbm):
             batch_size=batch_size,
             project=project,
 
-            to_print= True,
+            to_print= True, #EDITED
             early_stopping_patience=None,
             one_hot=one_hot,
             use_wandb=use_wandb,
@@ -87,7 +103,7 @@ experiments = [
     {
         'segmentation_technique': 'SAM2',
         'concept_name': None,
-        'clusters_list': [128, 256, 512], #define here your own cluster sizes
+        'clusters_list': [128, 256, 512], #EDITED
         'load_concepts_first': True
     },
 ]

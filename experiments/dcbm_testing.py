@@ -1,6 +1,6 @@
 import os
 import argparse
-# import wandb
+import wandb
 import re
 import clip
 
@@ -52,7 +52,7 @@ def run_training(cbm):
             batch_size=batch_size,
             project=project,
 
-            to_print= True,
+            to_print=False,
             early_stopping_patience=None,
             one_hot=one_hot,
             use_wandb=use_wandb,
