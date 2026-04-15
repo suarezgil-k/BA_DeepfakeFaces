@@ -10,7 +10,7 @@
 echo "Time: $(date)"
 
 module load devel/python/3.11.7-gnu-14.2
-source source /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/dcbm_env_py311_cu128/bin/activate
+source /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/dcbm_env_py311_cu128/bin/activate
 
 cd /pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments || exit 1
 export PYTHONPATH=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox
