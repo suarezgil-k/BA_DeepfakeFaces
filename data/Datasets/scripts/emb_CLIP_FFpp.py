@@ -20,7 +20,7 @@ import clip
 import tqdm
 import glob
 from collections import Counter
-from utilities.clip_debug import compute_embeddings, compute_embeddings_batched #EDITED
+from utilities.clip_ba import compute_embeddings, compute_embeddings_batched #EDITED
 import argparse
 
 def load_dataset(dataset):
@@ -62,7 +62,7 @@ def main(dataset, emb, device):
     ## train set ##
     train_list = glob.glob(dataset_path+"/train/*/*")
     # create and save embeddings Image embeddings
-    output_train = f"images_{dataset}_train_{model_name}.torch"
+    output_train = f"../../Embeddings/images_{dataset}_train_{model_name}.torch"
     compute_embeddings_batched(train_list, model, preprocess, output_train, device)
     output_train = None
 

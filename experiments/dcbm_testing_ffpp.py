@@ -8,10 +8,13 @@ Edited lines of code are labeled #EDITED
 
 Specific changes:
 - Disabled wandb import for local execution
-- Reduced number of epochs for testing
-- Simplified hyperparameter search to a single configuration
 - Enabled training output (to_print=True)
-- Reduced experiment scope to a smaller SAM2-based setup
+Switched experiment setup from CIFAR100 to FFpp_PipelineTest
+- Updated import to use dcbm_ba with custom FF++ support
+- Adjusted paths for FF++ image and concept embeddings
+- Disabled subset-based concept selection for the FF++ pipeline test
+- Reduced clustering setup to a minimal FF++ debug configuration
+
 """
 
 import os
@@ -30,22 +33,22 @@ current_dir = os.getcwd()
 parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
 sys.path.insert(0, parent_dir)
 
-from utils.dcbm_ba import *
+from utils.dcbm_ba import * #EDITED
 
 
 # ----------------- Constants -----------------
 embed_path = "../data/Embeddings/"
-dataset = "cifar100"
-class_labels_path = "../data/classes/cifar100_classes.txt"
-segment_path = "../data/Segments/"
-selected_image_concepts = "../data/Embeddings/subsets"
+dataset = "FFpp_PipelineTest" #EDITED
+class_labels_path = None #EDITED
+segment_path = "../data/Segments/scripts/Seg_embs/"
+selected_image_concepts = None #EDITED
 
 # ----------------- Hyperparameters -----------------
 model_name = "CLIP-ViT-L14"  # "CLIP-ViT-L14", "CLIP-RN50"
 
 cluster_method = "kmeans"     # "hierarchical", "kmeans"
 centroid_method = "median"    # "mean", "median"
-concept_per_class = 50      # How many images for each class: 5,10,20,50, None
+concept_per_class = None      #EDITED # How many images for each class: 5,10,20,50, None
 
 one_hot = False
 epochs = 50 #EDITED
@@ -103,7 +106,7 @@ experiments = [
     {
         'segmentation_technique': 'SAM2',
         'concept_name': None,
-        'clusters_list': [128, 256, 512], #EDITED
+        'clusters_list': [8], #EDITED
         'load_concepts_first': True
     },
 ]
