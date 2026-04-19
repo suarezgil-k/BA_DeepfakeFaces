@@ -2,7 +2,7 @@
 #SBATCH --job-name=dcbm_ffpp
 #SBATCH --partition=gpu_h100
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=2
 #SBATCH --mem=16G
 #SBATCH --time=03:00:00
 #SBATCH --output=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/dcbm_ffpp_%j.out

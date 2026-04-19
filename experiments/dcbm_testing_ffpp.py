@@ -9,11 +9,13 @@ Edited lines of code are labeled #EDITED
 Specific changes:
 - Disabled wandb import for local execution
 - Enabled training output (to_print=True)
-Switched experiment setup from CIFAR100 to FFpp_PipelineTest
+-Switched experiment setup from CIFAR100 to FFpp_PipelineTest
 - Updated import to use dcbm_ba with custom FF++ support
 - Adjusted paths for FF++ image and concept embeddings
+- Adjusted embedding path
+- Switched device to cuda
 - Disabled subset-based concept selection for the FF++ pipeline test
-- Reduced clustering setup to a minimal FF++ debug configuration
+- Set more realistic traing hyperparameters (epochs, batch size, leartning rate and clusters)
 
 """
 
@@ -37,7 +39,7 @@ from utils.dcbm_ba import * #EDITED
 
 
 # ----------------- Constants -----------------
-embed_path = "../data/Embeddings/"
+embed_path = "../data/Embeddings/FFpp_PipelineTest/" #EDITED
 dataset = "FFpp_PipelineTest" #EDITED
 class_labels_path = None #EDITED
 segment_path = "../data/Segments/scripts/Seg_embs/"
@@ -51,18 +53,18 @@ centroid_method = "median"    # "mean", "median"
 concept_per_class = None      #EDITED # How many images for each class: 5,10,20,50, None
 
 one_hot = False
-epochs = 50 #EDITED
-batch_size = 32
+epochs = 150 #EDITED
+batch_size = 16 #EDITED
 crop = False                  # True without background
 
 use_wandb = False
 project = "YOUR_PROJECT_NAME"        # Define your own project name within wandb
-device = "cpu"
+device = "cuda" #EDITED
 
 def run_training(cbm):
     """Preprocess data and train the CBM model with different hyperparameters."""
     cbm.preprocess_data(type_="standard", label_type=one_hot)
-    for lambda_1, lr in [(1e-4, 1e-4)]: #EDITED
+    for lambda_1, lr in [(1e-4, 1e-3)]: #EDITED
         cbm.train(
             num_epochs=epochs,
             lambda_1=lambda_1,
@@ -106,7 +108,7 @@ experiments = [
     {
         'segmentation_technique': 'SAM2',
         'concept_name': None,
-        'clusters_list': [8], #EDITED
+        'clusters_list': [8,16,32], #EDITED
         'load_concepts_first': True
     },
 ]
