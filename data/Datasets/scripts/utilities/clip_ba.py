@@ -8,6 +8,7 @@ Edited lines of code are labeled #EDITED
 Specific change:
 - Fixed variable reference in compute_embeddings_batched (image_keys → image_paths)
 - Corrected batch indexing (image_paths[i] → image_paths[x] within loop)
+- Changed image_name to image_path to fix bug in CLIP embedding creation
 """
 
 # load packages
@@ -82,7 +83,7 @@ def compute_embeddings_batched(image_paths, model, transform, output_file, devic
             batch_embeddings = model.encode_image(batch_images).cpu()  # Move back to CPU
 
             # Store each embedding in the dictionary with the corresponding image key
-            for idx, image_name in enumerate(batch_keys):
+            for idx, image_path in enumerate(batch_keys): #EDITED
                 image_name = image_path.split("/")[-1]
                 class_name = image_path.split("/")[-2]
                 try:

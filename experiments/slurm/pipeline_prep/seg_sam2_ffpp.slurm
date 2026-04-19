@@ -2,9 +2,9 @@
 #SBATCH --job-name=sam2_ffpp
 #SBATCH --partition=gpu_h100
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=2
 #SBATCH --mem=16G
-#SBATCH --time=01:00:00
+#SBATCH --time=02:00:00
 #SBATCH --output=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/sam2_ffpp_%j.out
 
 echo "Time: $(date)"
@@ -19,5 +19,5 @@ echo "Python path:"
 which python
 python --version
 
-python create_segments_SAM2_ba.py --dataset FFpp_PipelineTest --device gpu
+python create_segments_SAM2_ba.py --dataset FFpp_PipelineTest --device cuda:0 --check_existing False
 

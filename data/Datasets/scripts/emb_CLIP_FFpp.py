@@ -9,8 +9,7 @@ Edited lines of code are labeled #EDITED
 Specific changes:
 - Updated import to use modified CLIP utilities file (clip_debug instead of clip)
 - Added custom dataset option ("FFpp_PipelineTest") for testing
-
-
+- Added specific output path for train/val/test
 """
 ## conda env: clip_ex
 
@@ -62,21 +61,21 @@ def main(dataset, emb, device):
     ## train set ##
     train_list = glob.glob(dataset_path+"/train/*/*")
     # create and save embeddings Image embeddings
-    output_train = f"../../Embeddings/images_{dataset}_train_{model_name}.torch"
+    output_train = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_train_{model_name}.torch" #EDITED
     compute_embeddings_batched(train_list, model, preprocess, output_train, device)
     output_train = None
 
     ## val set ##
     val_list = glob.glob(dataset_path+"/val/*/*")
     # create and save embeddings Image embeddings
-    output_val = f"images_{dataset}_val_{model_name}.torch"
+    output_val = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_val_{model_name}.torch" #EDITED
     compute_embeddings_batched(val_list, model, preprocess, output_val, device)
     output_val = None
 
     ## test set ##
     test_list = glob.glob(dataset_path+"/test/*/*")
     print(len(test_list))
-    output_test = f"images_{dataset}_test_{model_name}.torch"
+    output_test = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_test_{model_name}.torch" #EDITED
     compute_embeddings_batched(test_list, model, preprocess, output_test, device)
     output_test = None
 

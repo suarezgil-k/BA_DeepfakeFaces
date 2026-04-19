@@ -1,10 +1,11 @@
 #!/bin/bash
 #SBATCH --job-name=ffpp_imgemb_l14
-#SBATCH --partition=gpu_h100
-#SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=1
+#SBATCH --partition=cpu
+# #SBATCH --partition=gpu_h100
+# #SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
-#SBATCH --time=00:30:00
+#SBATCH --time=01:30:00
 #SBATCH --output=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/ffpp_imgemb_l14_%j.out
 
 echo "Time: $(date)"
@@ -21,5 +22,6 @@ python --version
 
 python -c "import torch; print('torch works')"
 python -c "import clip; print('clip works')"
+python -c "import torch; print(torch.__version__); print(torch.version.cuda); print(torch.cuda.is_available())"
 
-python emb_CLIP_FFpp.py --dataset FFpp_PipelineTest --emb ViT-L/14 --device gpu
+python emb_CLIP_FFpp.py --dataset FFpp_PipelineTest --emb ViT-L/14 --device cpu

@@ -14,9 +14,30 @@ __pycache__/
 # archives
 *.tar.gz
 
-# large data folders only
+# -------------------------
+# large data folders
+# -------------------------
 data/cifar-10-batches-py/
 data/FaceForensics/
-data/Segments/
 data/Embeddings/
 data/Exemplary_explanations/data/
+
+# -------------------------
+# Segments: ignore data, keep code
+# -------------------------
+# ignore everything in Segments by default
+data/Segments/*
+
+# allow scripts!
+!data/Segments/scripts/
+!data/Segments/scripts/**
+
+# but ignore generated outputs inside scripts
+data/Segments/scripts/FFpp_PipelineTest_SAM2/
+data/Segments/scripts/Seg_embs/
+
+# ignore caches
+data/Segments/scripts/utilities/__pycache__/
+
+# ignore external SAM2 dependency
+data/Segments/scripts/utilities/segment_anything_2/
