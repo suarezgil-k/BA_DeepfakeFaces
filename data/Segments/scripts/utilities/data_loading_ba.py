@@ -9,6 +9,7 @@ Specific changes:
 - Added custom dataset option ("FFpp_PipelineTest") to enable loading of FF++ frame-based image data for segmentation
 - Added smaller train path for initial debugging (remove later!) -> UPDATE: REMOVED! :)
 - Changed up segment loading if statements to debug a specific error I was having and (hopefully) increasing robustness
+- Added custom dataset option ("ffpp_c23") to enable loading 
 """
 
 import glob
@@ -92,6 +93,9 @@ def load_data(dataset_name, model, prompt_specs, check_existing):
     if dataset_name == "FFpp_PipelineTest":
          train_paths = glob.glob("../../FaceForensics/c40/Test_FaceFrames/train/*/*.jpg")  #EDITED
          #train_paths = train_paths[:2]  #EDITED for Debugging
+
+    if dataset_name == "FFpp_c23":
+         train_paths = glob.glob("../../FaceForensics/c23_frames/train/*/*.jpg") #EDITED
 
     if check_existing:
         # check if some images have already been processed

@@ -10,6 +10,7 @@ Specific changes:
 - Adjusted SAM2 import to use the installed sam2 package instead of a missing local utilities path
 - Corrected SAM2 config path (sam2_1/sam2.1 -> sam2.1/sam2.1)
 - Changed sam2_checkpoint path to match with folder structure
+- Updated out_path and torch.save with ../ so that the folders will save one folder up and better fit in the folder structure
 """
 
 ## conda env: sam2
@@ -42,7 +43,7 @@ def main(dataset, create_segments, create_stats, device, check_existing):
     # load data
     prompt_specs = None
     train_paths, dataset_name = load_data(dataset,"SAM2", prompt_specs, check_existing)
-    out_path = f"{dataset_name}_SAM2"
+    out_path = f"../{dataset_name}_SAM2" #EDITED
 
     # create outdir if not exists
     if not os.path.exists(out_path):
@@ -75,7 +76,7 @@ def main(dataset, create_segments, create_stats, device, check_existing):
     if os.path.exists(f"stats/{dataset}_SAM2_STATS.torch"):
         old_stats = torch.load(f"stats/{dataset}_SAM2_STATS.torch")
         stats.update(old_stats)   
-    torch.save(stats, f"stats/{dataset}_SAM2_STATS.torch")
+    torch.save(stats, f"../stats/{dataset}_SAM2_STATS.torch") #EDITED
     print(len(stats))
 
 

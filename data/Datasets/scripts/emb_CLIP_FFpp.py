@@ -10,6 +10,8 @@ Specific changes:
 - Updated import to use modified CLIP utilities file (clip_debug instead of clip)
 - Added custom dataset option ("FFpp_PipelineTest") for testing
 - Added specific output path for train/val/test
+- Added Dataset FFpp c23 and removed hardcoding of output paths so they would work with the new dataset
+- Addec os import and added code to create folder and check for existing folder
 """
 ## conda env: clip_ex
 
@@ -21,6 +23,7 @@ import glob
 from collections import Counter
 from utilities.clip_ba import compute_embeddings, compute_embeddings_batched #EDITED
 import argparse
+import os #EDITED
 
 def load_dataset(dataset):
     if dataset == "cifar10":
@@ -45,7 +48,11 @@ def load_dataset(dataset):
 #EDITED:Added my own mini FFpp dataset to test my process
     elif dataset == "FFpp_PipelineTest":
         path = "/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/data/FaceForensics/c40/Test_FaceFrames"
-    
+
+#EDITED: Added FFpp c23 Dataset 
+    elif dataset == "FFpp_c23":
+        path = "/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/data/FaceForensics/c23_frames"
+   
     return path
 
 def main(dataset, emb, device):
@@ -57,25 +64,30 @@ def main(dataset, emb, device):
     model.to(device)
 
     dataset_path = load_dataset(dataset)
+    output_dir = f"../../Embeddings/{dataset}" #EDITED
+    os.makedirs(output_dir, exist_ok=True) #EDITED
 
     ## train set ##
     train_list = glob.glob(dataset_path+"/train/*/*")
     # create and save embeddings Image embeddings
-    output_train = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_train_{model_name}.torch" #EDITED
+    #output_train = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_train_{model_name}.torch" #EDITED
+    output_train = f"../../Embeddings/{dataset}/images_{dataset}_train_{model_name}.torch" #EDITED
     compute_embeddings_batched(train_list, model, preprocess, output_train, device)
     output_train = None
 
     ## val set ##
     val_list = glob.glob(dataset_path+"/val/*/*")
     # create and save embeddings Image embeddings
-    output_val = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_val_{model_name}.torch" #EDITED
+    #output_val = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_val_{model_name}.torch" #EDITED
+    output_val   = f"../../Embeddings/{dataset}/images_{dataset}_val_{model_name}.torch" #EDITED
     compute_embeddings_batched(val_list, model, preprocess, output_val, device)
     output_val = None
 
     ## test set ##
     test_list = glob.glob(dataset_path+"/test/*/*")
     print(len(test_list))
-    output_test = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_test_{model_name}.torch" #EDITED
+    #output_test = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_test_{model_name}.torch" #EDITED
+    output_test = f"../../Embeddings/FFpp_c23/images_{dataset}_test_{model_name}.torch" #EDITED
     compute_embeddings_batched(test_list, model, preprocess, output_test, device)
     output_test = None
 
