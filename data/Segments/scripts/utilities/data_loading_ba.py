@@ -9,7 +9,8 @@ Specific changes:
 - Added custom dataset option ("FFpp_PipelineTest") to enable loading of FF++ frame-based image data for segmentation
 - Added smaller train path for initial debugging (remove later!) -> UPDATE: REMOVED! :)
 - Changed up segment loading if statements to debug a specific error I was having and (hopefully) increasing robustness
-- Added custom dataset option ("ffpp_c23") to enable loading 
+- Added custom dataset option ("ffpp_c23") to enable loading
+- Changed path where file loads crops/segments from 
 """
 
 import glob
@@ -141,9 +142,9 @@ def load_segments(dataset_name, model, prompt_specs):
         dataset_name = "CUB_200_2011"
 
     if prompt_specs in [None, "None"]:
-        seg_paths = glob.glob(f"{dataset_name}_{model}/*")  #EDITED
+        seg_paths = glob.glob(f"../{dataset_name}_{model}/*")  #EDITED
     else:
-        seg_paths = glob.glob(f"{dataset_name}_{model}_{prompt_specs}/*")  #EDITED
+        seg_paths = glob.glob(f"../{dataset_name}_{model}_{prompt_specs}/*")  #EDITED
     
     print(seg_paths)
     return seg_paths

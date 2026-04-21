@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=24G
-#SBATCH --time=10:00:00
+#SBATCH --time=26:00:00
 #SBATCH --error=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/sam2_ffpp_c23_%j.err
 #SBATCH --output=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/sam2_ffpp_c23_%j.out
 
@@ -20,5 +20,5 @@ echo "Python path:"
 which python
 python --version
 
-python create_segments_SAM2_ba.py --dataset FFpp_c23 --device cuda:0 --check_existing False
+python create_segments_SAM2_ba.py --dataset FFpp_c23 --device cuda:0 --check_existing True
 
