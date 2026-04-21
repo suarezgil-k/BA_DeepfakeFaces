@@ -39,10 +39,13 @@ from utils.dcbm_ba import * #EDITED
 
 
 # ----------------- Constants -----------------
-embed_path = "../data/Embeddings/FFpp_PipelineTest/" #EDITED
-dataset = "FFpp_PipelineTest" #EDITED
+#embed_path = "../data/Embeddings/FFpp_PipelineTest/" #EDITED
+embed_path = "../data/Embeddings/FFpp_c23/" #EDITED
+#dataset = "FFpp_PipelineTest" #EDITED
+dataset = "FFpp_c23" #EDITED
 class_labels_path = None #EDITED
-segment_path = "../data/Segments/scripts/Seg_embs/"
+#segment_path = "../data/Segments/scripts/Seg_embs/"
+segment_path = "../data/Segments/Seg_embs/" #EDITED
 selected_image_concepts = None #EDITED
 
 # ----------------- Hyperparameters -----------------

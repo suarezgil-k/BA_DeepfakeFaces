@@ -54,7 +54,7 @@ crop = False                  # True without background
 
 use_wandb = False
 project = "YOUR_PROJECT_NAME"        # Define your own project name within wandb
-device = "cpu"
+device = "gpu" #RECHECK BEFORE SENDING SBTACH JOB!! 
 
 def run_training(cbm):
     """Preprocess data and train the CBM model with different hyperparameters."""

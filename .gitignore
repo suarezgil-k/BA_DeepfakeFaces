@@ -24,7 +24,12 @@ data/FaceForensics/*
 !data/FaceForensics/scripts/
 !data/FaceForensics/scripts/**
 
-data/Embeddings/
+
+data/Embeddings/*
+#allow Embeddings scripts
+!data/Embeddings/scripts/
+!data/Embeddings/scripts/**
+
 data/Exemplary_explanations/data/
 
 # -------------------------

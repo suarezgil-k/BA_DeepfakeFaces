@@ -8,6 +8,7 @@ Edited lines of code are labeled #EDITED
 
 Specific changes:
 - Fixed path (data_loading -> data_loading_ba)
+- Changed out_path by adding ../ in order to fit in with the rest of my structure
 """
 
 ## conda env: clip_ex
@@ -47,9 +48,9 @@ def main(emb, dataset, seg_model, prompt, device):
         seg_type = i.split("/")[-1]
         if seg_type in ["crops"]:#, "masks"]:
             if seg_model in ["GDINO", "SemSAM"]:
-                out_file = f"Seg_embs/seg{seg_type[:-1]}_{dataset}_{seg_model}_{prompt}_{model_name}.torch"
+                out_file = f"../Seg_embs/seg{seg_type[:-1]}_{dataset}_{seg_model}_{prompt}_{model_name}.torch" #EDITED
             else:
-                out_file = f"Seg_embs/seg{seg_type[:-1]}_{dataset}_{seg_model}_{model_name}.torch"
+                out_file = f"../Seg_embs/seg{seg_type[:-1]}_{dataset}_{seg_model}_{model_name}.torch" #EDITED
             print(out_file)
             # load paths of segments to embed
             segs = glob.glob(i+"/*/*.jpg")
