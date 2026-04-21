@@ -10,7 +10,8 @@ Specific changes:
 - Added smaller train path for initial debugging (remove later!) -> UPDATE: REMOVED! :)
 - Changed up segment loading if statements to debug a specific error I was having and (hopefully) increasing robustness
 - Added custom dataset option ("ffpp_c23") to enable loading
-- Changed path where file loads crops/segments from 
+- Changed path where file loads crops/segments from
+- Added train_path to ffpp_c23 that now pulls the subset 
 """
 
 import glob
@@ -18,7 +19,7 @@ import torch
 
 def extract_subset(all_train_paths, dataset_name):
     # open subset file
-    with open(f"../Embeddings/subsets/{dataset_name}/{dataset_name}_rand_50.txt") as f:
+    with open(f"../../Embeddings/subsets/{dataset_name}/{dataset_name}_rand_50.txt") as f:
         train_subset = f.readlines()
     # create dict from all training images
     train_dict = {i.split("/")[-1]: i for i in all_train_paths}
@@ -96,23 +97,24 @@ def load_data(dataset_name, model, prompt_specs, check_existing):
          #train_paths = train_paths[:2]  #EDITED for Debugging
 
     if dataset_name == "FFpp_c23":
-         train_paths = glob.glob("../../FaceForensics/c23_frames/train/*/*.jpg") #EDITED
+         all_train_paths = glob.glob("../../FaceForensics/c23_frames/train/*/*.jpg") #EDITED
+         train_paths = extract_subset(all_train_paths, dataset_name) #EDITED
 
     if check_existing:
         # check if some images have already been processed
         if prompt_specs is None:
             ## successfully processed images
-            complete = glob.glob(f"{dataset_name}_{model}/*/*/*")
+            complete = glob.glob(f"../{dataset_name}_{model}/*/*/*") #EDITED
             ## list of images without segments
             try:
-                stats = torch.load(f"Seg_embs/{dataset_name}_{model}_STATS.torch")
+                stats = torch.load(f"../Seg_embs/{dataset_name}_{model}_STATS.torch") #EDITED
             except:
                 stats = {"total_img_wo_masks": []}
         else: 
-            complete = glob.glob(f"{dataset_name}_{model}_{prompt_specs}/*/*/*")
+            complete = glob.glob(f"../{dataset_name}_{model}_{prompt_specs}/*/*/*") #EDITED
             ## list of images without segments
             try:
-                stats = torch.load(f"Seg_embs/{dataset_name}_{model}_{prompt_specs}_STATS.torch")
+                stats = torch.load(f"../Seg_embs/{dataset_name}_{model}_{prompt_specs}_STATS.torch") #EDITED
             except:
                 stats = {"total_img_wo_masks": []}
 

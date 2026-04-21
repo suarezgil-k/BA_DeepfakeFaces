@@ -4,9 +4,13 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=24G
-#SBATCH --time=26:00:00
+#SBATCH --time=2:00:00
 #SBATCH --error=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/sam2_ffpp_c23_%j.err
 #SBATCH --output=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/sam2_ffpp_c23_%j.out
+
+
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=katarinasg97@gmail.com
 
 echo "Time: $(date)"
 
