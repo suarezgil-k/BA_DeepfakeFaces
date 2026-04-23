@@ -24,4 +24,4 @@ python -c "import torch; print('torch works')"
 python -c "import clip; print('clip works')"
 python -c "import torch; print(torch.__version__); print(torch.version.cuda); print(torch.cuda.is_available())"
 
-python emb_CLIP_FFpp.py --dataset FFpp_c23 --emb ViT-L/14 --device cuda:0
+python emb_CLIP_ba.py --dataset FFpp_c23 --emb ViT-L/14 --device cuda:0

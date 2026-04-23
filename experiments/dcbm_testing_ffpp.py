@@ -14,7 +14,7 @@ Specific changes:
 - Adjusted paths for FF++ image and concept embeddings
 - Adjusted embedding path
 - Switched device to cuda
-- Disabled subset-based concept selection for the FF++ pipeline test
+- Disabled subset-based concept selection for the FF++ pipeline test ->REVERTED for c23
 - Set more realistic traing hyperparameters (epochs, batch size, leartning rate and clusters)
 
 """
@@ -46,7 +46,8 @@ dataset = "FFpp_c23" #EDITED
 class_labels_path = None #EDITED
 #segment_path = "../data/Segments/scripts/Seg_embs/"
 segment_path = "../data/Segments/Seg_embs/" #EDITED
-selected_image_concepts = None #EDITED
+selected_image_concepts = "../data/Embeddings/subsets"
+
 
 # ----------------- Hyperparameters -----------------
 model_name = "CLIP-ViT-L14"  # "CLIP-ViT-L14", "CLIP-RN50"
@@ -62,7 +63,7 @@ crop = False                  # True without background
 
 use_wandb = False
 project = "YOUR_PROJECT_NAME"        # Define your own project name within wandb
-device = "cuda" #EDITED
+device = "cuda:0" #EDITED
 
 def run_training(cbm):
     """Preprocess data and train the CBM model with different hyperparameters."""

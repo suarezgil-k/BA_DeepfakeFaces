@@ -8,9 +8,10 @@ This version was created for adaptation within the scope of the bachelor thesis.
 Edited lines of code are labeled #EDITED
 
 Specific changes:
-- Added custom dataset support for FFpp_PipelineTest
+- Added custom dataset support for FFpp_PipelineTest and FFpp_c23
 - Adjusted concept loading to support FF++ SAM2 concept embeddings
 - Added class labels fpr FFpp_PipelineTest
+- Commented out wand import 
 """
 
 
@@ -47,7 +48,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import datetime 
 
-import wandb
+#import wandb #EDITED
 torch.manual_seed(5)
 np.random.seed(5)
 
@@ -140,7 +141,7 @@ class CBM ():
     
         # ---- TODO -----
         # Define own dataset
-        if self.dataset == "FFpp_PipelineTest":
+        if self.dataset in ["FFpp_PipelineTest", "FFpp_c23"]: #EDITED
             class_dict = ["fake", "real"]  #EDITED 
 
         if self.dataset == 'cub':
@@ -297,7 +298,14 @@ class CBM ():
             local_name = f'images_FFpp_PipelineTest_val_{model_name}_0.torch'  #EDITED
             val_path = os.path.join(embeddings_parent_directory, local_name)  #EDITED
 
-            
+        elif dataset == "FFpp_c23":
+            local_name = f'images_FFpp_c23_train_{model_name}_0.torch'  #EDITED
+            train_path = os.path.join(embeddings_parent_directory, local_name)  #EDITED
+            local_name = f'images_FFpp_c23_test_{model_name}_0.torch'  #EDITED
+            test_path = os.path.join(embeddings_parent_directory, local_name)  #EDITED
+            local_name = f'images_FFpp_c23_val_{model_name}_0.torch'  #EDITED
+            val_path = os.path.join(embeddings_parent_directory, local_name)  #EDITED     
+
         # check if paths are valid
         if train_path is not None:
             if not os.path.exists(train_path):
@@ -545,6 +553,20 @@ class CBM ():
              else:
                   concepts = f'segmask_FFpp_PipelineTest_{seg_tech}_{model_name}.torch'  #EDITED
         
+
+        elif dataset == "FFpp_c23":
+           if not crop:
+               if concept_name != None:
+                    concepts = f'segcrop_FFpp_c23_{seg_tech}_{concept_name}_{model_name}.torch'  #EDITED
+               else:
+                    concepts = f'segcrop_FFpp_c23_{seg_tech}_{model_name}.torch'  #EDITED
+           else:
+                self.background = True
+                if concept_name != None:
+                    concepts = f'segmask_FFpp_c23_{seg_tech}_{concept_name}_{model_name}.torch'  #EDITED
+                else:
+                    concepts = f'segmask_FFpp_c23_{seg_tech}_{model_name}.torch'  #EDITED
+
          
         elif dataset == "cub":
             if not crop:
