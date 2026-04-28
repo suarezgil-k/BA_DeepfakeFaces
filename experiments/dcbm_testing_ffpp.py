@@ -57,7 +57,7 @@ centroid_method = "median"    # "mean", "median"
 concept_per_class = None      #EDITED # How many images for each class: 5,10,20,50, None
 
 one_hot = False
-epochs = 150 #EDITED
+epochs = 60 #EDITED
 batch_size = 16 #EDITED
 crop = False                  # True without background
 
@@ -112,7 +112,7 @@ experiments = [
     {
         'segmentation_technique': 'SAM2',
         'concept_name': None,
-        'clusters_list': [8,16,32], #EDITED
+        'clusters_list': [448], #EDITED
         'load_concepts_first': True
     },
 ]

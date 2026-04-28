@@ -13,6 +13,7 @@ Specific changes:
 - Added Dataset FFpp c23 and removed hardcoding of output paths so they would work with the new dataset
 - Addec os import and added code to create folder and check for existing folder
 - Added Dataset CelebDF
+- Removed codeblocks for train and val split since this file is to generate embeddings for the generalization test only
 """
 ## conda env: clip_ex
 
@@ -72,24 +73,8 @@ def main(dataset, emb, device):
     output_dir = f"../../Embeddings/{dataset}" #EDITED
     os.makedirs(output_dir, exist_ok=True) #EDITED
 
-    ## train set ##
-    train_list = glob.glob(dataset_path+"/train/*/*")
-    # create and save embeddings Image embeddings
-    #output_train = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_train_{model_name}.torch" #EDITED
-    output_train = f"../../Embeddings/{dataset}/images_{dataset}_train_{model_name}.torch" #EDITED
-    compute_embeddings_batched(train_list, model, preprocess, output_train, device)
-    output_train = None
-
-    ## val set ##
-    val_list = glob.glob(dataset_path+"/val/*/*")
-    # create and save embeddings Image embeddings
-    #output_val = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_val_{model_name}.torch" #EDITED
-    output_val   = f"../../Embeddings/{dataset}/images_{dataset}_val_{model_name}.torch" #EDITED
-    compute_embeddings_batched(val_list, model, preprocess, output_val, device)
-    output_val = None
-
     ## test set ##
-    test_list = glob.glob(dataset_path+"/test/*/*")
+    test_list = glob.glob(dataset_path+"/**/*.jpg", recursive=True)
     print(len(test_list))
     #output_test = f"../../Embeddings/FFpp_PipelineTest/images_{dataset}_test_{model_name}.torch" #EDITED
     output_test = f"../../Embeddings/{dataset}/images_{dataset}_test_{model_name}.torch" #EDITED

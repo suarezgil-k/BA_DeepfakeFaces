@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=16G
-#SBATCH --time=06:00:00
+#SBATCH --time=00:20:00
 #SBATCH --output=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/dcbm_ffpp_c23_%j.out
 #SBATCH --error=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/dcbm_ffpp_c23_%j.err
 

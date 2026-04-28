@@ -32,6 +32,11 @@ data/Embeddings/*
 
 data/Exemplary_explanations/data/
 
+data/CelebDF_subset/*
+#allow CelebDF scripts
+!data/CelebDF_subset/scripts/
+!data/CelebDF_subset/scripts/**
+
 # -------------------------
 # Segments: ignore data, keep code
 # -------------------------
