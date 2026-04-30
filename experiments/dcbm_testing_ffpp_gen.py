@@ -8,10 +8,15 @@ Edited lines of code are labeled #EDITED
 
 Specific changes:
 - Disabled wandb import for local execution
-- Reduced number of epochs for testing
-- Simplified hyperparameter search to a single configuration
 - Enabled training output (to_print=True)
-- Reduced experiment scope to a smaller SAM2-based setup
+-Switched experiment setup from CIFAR100 to FFpp_PipelineTest
+- Updated import to use dcbm_ba_gen
+- Adjusted paths for FF++ image and concept embeddings
+- Adjusted embedding path
+- Switched device to cuda
+- Disabled subset-based concept selection for the FF++ pipeline test ->REVERTED for c23
+- Set more realistic traing hyperparameters (epochs, batch size, leartning rate and clusters)
+
 """
 
 import os
@@ -30,36 +35,40 @@ current_dir = os.getcwd()
 parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
 sys.path.insert(0, parent_dir)
 
-from utils.dcbm_ba import *
+from utils.dcbm_ba_gen import * #EDITED to use file for generalization test
 
 
 # ----------------- Constants -----------------
-embed_path = "../data/Embeddings/"
-dataset = "cifar100"
-class_labels_path = "../data/classes/cifar100_classes.txt"
-segment_path = "../data/Segments/"
+#embed_path = "../data/Embeddings/FFpp_PipelineTest/" #EDITED
+embed_path = "../data/Embeddings/FFpp_c23/" #EDITED
+#dataset = "FFpp_PipelineTest" #EDITED
+dataset = "FFpp_c23" #EDITED
+class_labels_path = None #EDITED
+#segment_path = "../data/Segments/scripts/Seg_embs/"
+segment_path = "../data/Segments/Seg_embs/" #EDITED
 selected_image_concepts = "../data/Embeddings/subsets"
+
 
 # ----------------- Hyperparameters -----------------
 model_name = "CLIP-ViT-L14"  # "CLIP-ViT-L14", "CLIP-RN50"
 
 cluster_method = "kmeans"     # "hierarchical", "kmeans"
 centroid_method = "median"    # "mean", "median"
-concept_per_class = 50      # How many images for each class: 5,10,20,50, None
+concept_per_class = None      #EDITED # How many images for each class: 5,10,20,50, None
 
 one_hot = False
-epochs = 50 #EDITED
-batch_size = 32
+epochs = 60 #EDITED
+batch_size = 16 #EDITED
 crop = False                  # True without background
 
 use_wandb = False
 project = "YOUR_PROJECT_NAME"        # Define your own project name within wandb
-device = "gpu" #RECHECK BEFORE SENDING SBTACH JOB!! 
+device = "cuda:0" #EDITED
 
 def run_training(cbm):
     """Preprocess data and train the CBM model with different hyperparameters."""
     cbm.preprocess_data(type_="standard", label_type=one_hot)
-    for lambda_1, lr in [(1e-4, 1e-4)]: #EDITED
+    for lambda_1, lr in [(1e-4, 1e-3)]: #EDITED
         cbm.train(
             num_epochs=epochs,
             lambda_1=lambda_1,
@@ -103,7 +112,7 @@ experiments = [
     {
         'segmentation_technique': 'SAM2',
         'concept_name': None,
-        'clusters_list': [128, 256, 512], #EDITED
+        'clusters_list': [448], #EDITED
         'load_concepts_first': True
     },
 ]

@@ -12,6 +12,7 @@ Specific changes:
 - Adjusted concept loading to support FF++ SAM2 concept embeddings
 - Added class labels fpr FFpp_PipelineTest
 - Commented out wand import 
+- Changed test path in FFpp_c23 block to use CelebDF as test dataset
 """
 
 
@@ -28,8 +29,6 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 import os
 import matplotlib.pyplot as plt
-import matplotlib #EDITED
-matplotlib.use("Agg")  #EDITED for saving plots in slurm jobs
 import re
 from torch.utils.data import TensorDataset, DataLoader
 from sklearn.metrics import pairwise_distances
@@ -303,8 +302,9 @@ class CBM ():
         elif dataset == "FFpp_c23":
             local_name = f'images_FFpp_c23_train_{model_name}_0.torch'  #EDITED
             train_path = os.path.join(embeddings_parent_directory, local_name)  #EDITED
-            local_name = f'images_FFpp_c23_test_{model_name}_0.torch'  #EDITED
-            test_path = os.path.join(embeddings_parent_directory, local_name)  #EDITED
+            
+            test_path = "../data/Embeddings/CelebDF/images_CelebDF_test_CLIP-ViT-L14_0.torch"  #EDITED. Changed test path to dataset used for generalization path 
+            
             local_name = f'images_FFpp_c23_val_{model_name}_0.torch'  #EDITED
             val_path = os.path.join(embeddings_parent_directory, local_name)  #EDITED     
 
