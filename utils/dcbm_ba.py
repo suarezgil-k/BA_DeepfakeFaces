@@ -12,6 +12,12 @@ Specific changes:
 - Adjusted concept loading to support FF++ SAM2 concept embeddings
 - Added class labels fpr FFpp_PipelineTest
 - Commented out wand import 
+- Added names to concept clusters for interpretability
+- Stored representative concepts for explanations
+- Enabled saving of feature importance plots so it would be slurm compatible
+- Switched to_save_concepts to TRUE
+- Added ffpp_c23 dataset to cluster_image_concepts() and centroid_concepts()
+- Added method save_test_predictions to capture labels to create confusion matrix
 """
 
 
@@ -27,9 +33,9 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 import os
-import matplotlib.pyplot as plt
 import matplotlib #EDITED
 matplotlib.use("Agg")  #EDITED for saving plots in slurm jobs
+import matplotlib.pyplot as plt
 import re
 from torch.utils.data import TensorDataset, DataLoader
 from sklearn.metrics import pairwise_distances
@@ -38,6 +44,7 @@ from joblib import Parallel, delayed
 from collections import Counter
 import random
 import glob
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix #EDITED for confusion matrix input
 
 
 from tqdm import tqdm
@@ -64,7 +71,7 @@ class CBM ():
                  val_split = 0.1,
                  standard_scaler = True,
                  device = 'cpu',
-                 to_save_concepts = False):
+                 to_save_concepts = True):
         
         self.device = device
         self.dataset = dataset
@@ -520,6 +527,8 @@ class CBM ():
             dataset_name = "ClimateTV/ClimateTV"
         if self.dataset == "mit_states":
             dataset_name = "MiT-States/MiT-States"
+        if self.dataset == "FFpp_c23":
+            dataset_name = "FaceForensics c23"
         
         self.class_num = concept_per_class
         path_names = f'{concept_path}/{dataset_name}_rand_{concept_per_class}.txt'
@@ -783,6 +792,13 @@ class CBM ():
         if self.dataset == "places365":
             dataset = "Places365"
 
+        #EDITED for explainability - - - - -
+        if self.dataset == "FFpp_c23":
+           dataset = "FFpp_c23"
+       
+        os.makedirs(f"./clusters/{dataset}", exist_ok=True)
+        # - - - - - - - - - - - - -   
+
         # save intermediate output
         if self.to_save_concepts:
             if self.concept_name is not None:
@@ -811,6 +827,13 @@ class CBM ():
             dataset = "CUB_200_2011"
         if self.dataset == "places365":
             dataset = "Places365"
+        
+        #EDITED for explainability
+        if self.dataset == "FFpp_c23":
+           dataset = "FFpp_c23"
+        
+        os.makedirs(f"./clusters/{dataset}", exist_ok=True)
+        # - - - - - - - - - 
             
         if self.to_save_concepts:
             if self.concept_name is not None:
@@ -820,10 +843,18 @@ class CBM ():
             else:
                 torch.save(clustered_concepts, f"./clusters/{dataset}/cluster_centroids_{dataset}_{self.segmentation_technique}_{self.clip_model}_X_{self.class_num}_{n_clusters}.torch")
                 torch.save(res, f"./clusters/{dataset}/cluster_centroids_named_{dataset}_{self.segmentation_technique}_{self.clip_model}_X_{self.class_num}_{n_clusters}.torch")
-            
+  
+        # EDITED: store representative names for explainability - - - - -
+        if centroid_method == "median":
+           feature_names = list(res.keys())
+        else:
+           feature_names = [f"cluster_{key}" for key in clustered_concepts.keys()]
+        # - - - - - - -
+
         # Convert the final cluster concepts back to an array
         clustered_concepts = np.array([clustered_concepts[key] for key in clustered_concepts.keys()])
         self.clustered_concepts = clustered_concepts
+        self.feature_names = feature_names  # EDITED
         
     def concept_intervention(self, concepts_remove, similarity_threshold=0.5):
         #remove in  self.clustered_concepts all concepts in concepts_remove that are above the similarity threshold
@@ -1224,13 +1255,18 @@ class CBM ():
         plt.xlabel("Feature")
         plt.ylabel("Contribution")
         plt.tight_layout()
-        plt.show()
+       
+        #EDITED ---- 
+        if save:
+            os.makedirs("./explainability/graphs", exist_ok=True)
+            plt.savefig(f"./explainability/graphs/{self.centroid_method}_feature_{index}.pdf", bbox_inches="tight")
+
+        plt.close()
+        #--------
         
         print(f"True Class: {self.class_labels[np.argmax(self.y_test[index:index+1][0])]}")
         print(f"Predicted Class: {self.class_labels[predicted_class]}")
-        
-        if save:
-            plt.savefig(f"./imgs/feature_importance_{index}.pdf")
+       
         return top_features, top_contributions
     
     def evaluate(self, data_loader, device, one_hot=False):
@@ -1267,6 +1303,45 @@ class CBM ():
         avg_loss = total_loss / total
         accuracy = 100 * correct / total
         return avg_loss, accuracy
+
+#EDITED: whole method Added to save labels to create Confusion Matrix  - - - - - - - - 
+    def save_test_predictions(self, device, one_hot=False, save_path="./results/test_predictions.npz"):
+        """
+        Save true and predicted labels for the full test set.
+        This can be used later to create a confusion matrix.
+        """
+        self.model.eval()
+
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+        X_test = torch.tensor(self.X_test, dtype=torch.float32).to(device)
+
+        if not one_hot:
+            y_test = torch.tensor(self.y_test, dtype=torch.float32).to(device)
+        else:
+            y_test = torch.tensor(self.y_test, dtype=torch.long).to(device)
+
+        with torch.no_grad():
+            outputs = self.model(X_test)
+            _, y_pred = torch.max(outputs, 1)
+
+            if not one_hot:
+                _, y_true = torch.max(y_test, 1)
+            else:
+                y_true = y_test
+
+        y_true_np = y_true.cpu().numpy()
+        y_pred_np = y_pred.cpu().numpy()
+
+        np.savez(save_path, y_true=y_true_np, y_pred=y_pred_np)
+
+        cm = confusion_matrix(y_true_np, y_pred_np)
+        print("Confusion Matrix:")
+        print(cm)
+        print(f"Saved predictions to {save_path}")
+
+        return y_true_np, y_pred_np, cm
+# - - - - - -  --  - - - - -  -
     
 class CBM_Model:
 

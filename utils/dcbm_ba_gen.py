@@ -13,6 +13,8 @@ Specific changes:
 - Added class labels fpr FFpp_PipelineTest
 - Commented out wand import 
 - Changed test path in FFpp_c23 block to use CelebDF as test dataset
+   -> Updated CelebDF test path to point to balanced torch file
+- Changed test path in FFpp_c23 block to use ffpp_c40 as test dataset
 """
 
 
@@ -303,8 +305,9 @@ class CBM ():
             local_name = f'images_FFpp_c23_train_{model_name}_0.torch'  #EDITED
             train_path = os.path.join(embeddings_parent_directory, local_name)  #EDITED
             
-            test_path = "../data/Embeddings/CelebDF/images_CelebDF_test_CLIP-ViT-L14_0.torch"  #EDITED. Changed test path to dataset used for generalization path 
-            
+            #test_path = "../data/Embeddings/CelebDF/images_CelebDF_test_CLIP-ViT-L14_0.torch"  #EDITED. Changed test path to dataset used for generalization path 
+            test_path = "../data/Embeddings/CelebDF/images_CelebDF_test_balanced_CLIP-ViT-L14_0.torch" #EDITED to test with balanced CelebDF dataset
+            #test_path = "../data/Embeddings/FFpp_c40/images_FFpp_c40_test_CLIP-ViT-L14_0_fixedlabels.torch" #EDITED To test robustness with c40 dataset
             local_name = f'images_FFpp_c23_val_{model_name}_0.torch'  #EDITED
             val_path = os.path.join(embeddings_parent_directory, local_name)  #EDITED     
 

@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=dcbm_ffpp_c23
+#SBATCH --job-name=dcbm_ffpp_c40_gentest
 #SBATCH --partition=gpu_h100
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=16G
-#SBATCH --time=00:45:00
-#SBATCH --output=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/dcbm_ffpp_c23_%j.out
-#SBATCH --error=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/dcbm_ffpp_c23_%j.err
+#SBATCH --time=00:30:00
+#SBATCH --output=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/dcbm_ffpp_c40_gen_hierach_%j.out
+#SBATCH --error=/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/experiments/logs/dcbm_ffpp_c40_gen_hierach_%j.err
 
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=katarinasg97@gmail.com
@@ -26,4 +26,4 @@ python --version
 python -c "import torch; print('torch works')"
 python -c "from utils.dcbm_ba import *; print('dcbm_ba works')"
 
-python dcbm_testing_ffpp.py
+python dcbm_testing_ffpp_gen.py

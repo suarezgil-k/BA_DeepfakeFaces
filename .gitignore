@@ -29,6 +29,7 @@ data/Embeddings/*
 #allow Embeddings scripts
 !data/Embeddings/scripts/
 !data/Embeddings/scripts/**
+!data/Embeddings/subsets/**
 
 data/Exemplary_explanations/data/
 

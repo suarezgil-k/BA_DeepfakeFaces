@@ -15,8 +15,7 @@ Specific changes:
 - Adjusted embedding path
 - Switched device to cuda
 - Disabled subset-based concept selection for the FF++ pipeline test ->REVERTED for c23
-- Set more realistic traing hyperparameters (epochs, batch size, leartning rate and clusters)
-
+- changed loading of utils to dcbm_ba_gen for generalisation test
 """
 
 import os
@@ -52,8 +51,8 @@ selected_image_concepts = "../data/Embeddings/subsets"
 # ----------------- Hyperparameters -----------------
 model_name = "CLIP-ViT-L14"  # "CLIP-ViT-L14", "CLIP-RN50"
 
-cluster_method = "kmeans"     # "hierarchical", "kmeans"
-centroid_method = "median"    # "mean", "median"
+cluster_method = "hierarchical"     # "hierarchical", "kmeans"
+centroid_method = "mean"    # "mean", "median"
 concept_per_class = None      #EDITED # How many images for each class: 5,10,20,50, None
 
 one_hot = False

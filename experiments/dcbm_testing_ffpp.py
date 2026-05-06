@@ -16,7 +16,7 @@ Specific changes:
 - Switched device to cuda
 - Disabled subset-based concept selection for the FF++ pipeline test ->REVERTED for c23
 - Set more realistic traing hyperparameters (epochs, batch size, leartning rate and clusters)
-
+- Added explainability plots for selected test samples after training
 """
 
 import os
@@ -62,7 +62,7 @@ batch_size = 16 #EDITED
 crop = False                  # True without background
 
 use_wandb = False
-project = "YOUR_PROJECT_NAME"        # Define your own project name within wandb
+project = "DeepfakeDetection_ffppc23"        # Define your own project name within wandb
 device = "cuda:0" #EDITED
 
 def run_training(cbm):
@@ -82,7 +82,14 @@ def run_training(cbm):
             one_hot=one_hot,
             use_wandb=use_wandb,
         )
-
+        #EDITED  Added to create confusion matrix
+        cbm.save_test_predictions(
+            device=device,
+            one_hot=one_hot,
+            save_path=f"./results/predictions_{cbm.cluster_technique}_{cbm.centroid_method}_{cbm.clustered_concepts.shape[0]}.npz"
+        )        
+       # - - - - - - - - - - - - - - - - - - - -
+      
 def run_experiment(segmentation_technique, concept_name, clusters_list, load_concepts_first):
     """Run experiments with specified segmentation techniques and clustering options."""
     # Initial training without loading concepts and clustering
@@ -106,6 +113,46 @@ def run_experiment(segmentation_technique, concept_name, clusters_list, load_con
             cbm.clustered_concepts = cbm.image_segments
         cbm.centroid_concepts(centroid_method)
         run_training(cbm)
+
+# EDITED: Generate explainability plots for selected test samples - - - - - - - - -
+        X_test = torch.tensor(cbm.X_test, dtype=torch.float32).to(device)
+
+        with torch.no_grad():
+            outputs = cbm.model(X_test)
+            pred = torch.argmax(outputs, dim=1).cpu().numpy()
+
+        true = np.argmax(cbm.y_test, axis=1)
+
+        correct_fake = []
+        correct_real = []
+        wrong_fake_as_real = []
+        wrong_real_as_fake = []
+
+        for i, (t, p) in enumerate(zip(true, pred)):
+            true_label = cbm.class_labels[t]
+            pred_label = cbm.class_labels[p]
+
+            if true_label == "fake" and pred_label == "fake":
+                correct_fake.append(i)
+            elif true_label == "real" and pred_label == "real":
+                correct_real.append(i)
+            elif true_label == "fake" and pred_label == "real":
+                wrong_fake_as_real.append(i)
+            elif true_label == "real" and pred_label == "fake":
+                wrong_real_as_fake.append(i)
+
+        selected_indices = (
+            correct_fake[:2]
+            + correct_real[:2]
+            + wrong_fake_as_real[:1]
+            + wrong_real_as_fake[:1]
+        )
+
+        print("Selected explainability indices:", selected_indices)
+
+        for idx in selected_indices:
+            cbm.plot_instance_feature_importance(index=idx, n=10, save=True)
+# -- - - - - - - - - - - - -- - - - - - - - - - - - - - - - -  - - - - - - - - - - -
 
 # ----------------- Experiments -----------------
 experiments = [

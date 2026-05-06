@@ -13,6 +13,7 @@ Specific changes:
 - Added Dataset FFpp c23 and removed hardcoding of output paths so they would work with the new dataset
 - Addec os import and added code to create folder and check for existing folder
 - Added Dataset CelebDF
+- Added Dataset FFpp c40
 - Removed codeblocks for train and val split since this file is to generate embeddings for the generalization test only
 """
 ## conda env: clip_ex
@@ -58,6 +59,9 @@ def load_dataset(dataset):
 #EDITED: Added CelebDF Dataset
     elif dataset == "CelebDF":
         path = "/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/data/CelebDF_subset/CelebDF_frames"      
+#EDITED: Added FFppc40 Dataset
+    elif dataset == "FFpp_c40":
+        path = "/pfs/work9/workspace/scratch/ma_ksuarezg-dcbm-ws/Test_sandbox/data/FaceForensics/c40_frames"
    
     return path
 
